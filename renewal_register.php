@@ -126,7 +126,7 @@ function formatDate(date) {
 					
 				for (i in result) {
 					count[result[i].status]++;
-				html=html+'<tr class="'+row_class[result[i].status]+'"><td>'+formatDate(result[i].expiry_date)+'</td><td>'+result[i].status+'</td><td><a href="view_policy.php?id='+result[i].iid+'">'+result[i].policy_number+'</a></td><td>'+result[i].company+'</td><td><a href="view_cust.php?id='+result[i].vid+'">'+result[i].customer_name+'</a></td><td>'+result[i].customer_number+'</td><td></tr>';
+				html=html+'<tr class="'+row_class[result[i].status]+'"><td>'+formatDate(result[i].expiry_date)+'</td><td>'+result[i].status+'</td><td><a href="view_policy.php?id='+result[i].iid+'">'+result[i].policy_number+'</a></td><td>'+result[i].company+'</td><td>'+result[i].customer_name+'</td><td>'+result[i].customer_number+'</td><td></tr>';
 			 }
 			 
 			 followup_count=count["followup"]*100/result.length;
