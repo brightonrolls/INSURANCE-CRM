@@ -164,7 +164,7 @@ case 'renew_policy':
 
 if (strlen(trim($_POST['chassis']))<5) {die('Chassis Number cannot be blank!');}
 $oldpolicy_number=$_POST['policy_number'];
-$newpolicy_number=$_POST['new_policy_number'];;
+$newpolicy_number=$_POST['new_policy_number'];
 $insurance_data['chassis']=$_POST['chassis'];
 $insurance_data['policy_number']=$newpolicy_number;
 $insurance_data['company']=$_POST['company'];

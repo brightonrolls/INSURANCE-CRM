@@ -80,7 +80,7 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
  <td><span class="editable" id="policy_number" data-type="text" data-pk="<?=$policy['id']?>" data-url="ajax.php"><?=$policy['policy_number']?></span> <?=$d_policy?></td>
    <td><?=$policy['policy_type']?></td>
     <td><?=$policy['company']?></td>	
-  <td><?=$policy['expiry_date']?></td>
+  <td><?=date( 'd-m-Y', strtotime($policy['expiry_date']))?></td>
 </tr>
 
  </table>
@@ -133,8 +133,8 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
  <tbody>
  <tr><td>TYPE</td> <td><?=$policy['business_type']?></td></tr>
 <tr><td>MONTH</td>
-<td><span class="editable" data-date-format="m" id="business_month" data-type="date" data-pk="<?=$policy['id']?>" data-url="ajax.php">
-<?=(strtotime($policy['business_month']))?date( 'Y-m-d', strtotime($policy['business_month'])):null?>
+<td><span class="editable" data-viewformat="dd-mm-yyyy" id="business_month" data-type="date" data-pk="<?=$policy['id']?>" data-url="ajax.php">
+<?=(strtotime($policy['business_month']))?date( 'd-m-Y', strtotime($policy['business_month'])):null?>
 </span></td></tr>
 <tr><td>RENEWED POLICY</td><td><?=$renew_policy?></td></tr>
 </tbody>
