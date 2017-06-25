@@ -17,8 +17,8 @@ break;
 case 'insurance':
 $insurance_page='active';
 break;
-case 'renewal_register':
-$renewal_register_page='active';
+case 'renewals':
+$renewals_page='active';
 break;
 case 'document':
 $document_page='active';
@@ -61,7 +61,7 @@ include('fun.php');
   </head>
   <body>
 
-  <nav class="navbar navbar-default">
+  <nav class="navbar navbar-default ">
   <div class="container-fluid">
   <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -73,7 +73,7 @@ include('fun.php');
       </button>
       <a class="navbar-brand" href="index.php">Volkswagen Bareilly</a>
     </div>
-  
+
   
     <!-- Brand and toggle get grouped for better mobile display -->
 
@@ -81,9 +81,10 @@ include('fun.php');
 	  <ul class="nav navbar-nav">
 	  <li class="<?=$customer_page?>"><a href="customers.php">CUSTOMERS</a></li>
 	  <li class="<?=$insurance_page?>"><a href="insurance.php">INSURANCE</a></li>
-	  <li class="<?=$renewal_register_page?>"><a href="renewal_register.php">RENEWAL REGISTER</a></li>
+	  <li class="<?=$renewals_page?>"><a href="renewals.php">RENEWALS</a></li>
 	  <li class="<?=$document_page?>"><a href="document.php">DOCUMENTS</a></li>
 	  </ul>
+	    <p class="navbar-text navbar-right">Created by <b>Utkarsh Anand</b></p>
 	  </div>
 	  
 

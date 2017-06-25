@@ -30,7 +30,7 @@ for ($i = 0; $i <count($rows); $i++) {
 <div class="container-fluid">
 <div class="row">
 <div class="col-md-1"><p>
-<a href="javascript:window.history.back();" class="btn btn-default">BACK</a>
+<a href="javascript:window.history.back();" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span> BACK</a>
 </p></div>
 
 <div class="col-md-4">
@@ -49,7 +49,7 @@ for ($i = 0; $i <count($rows); $i++) {
 <tr><td>MODEL</td><td><?=$vehicle['model']?></td></tr>
 <tr><td>CUBIC CAPACITY</td><td><?=$vehicle['cc']?></td></tr>
 <tr><td>MFG YEAR</td><td><?=$vehicle['mfg']?></td></tr>
-<tr><td>HYPOTHECATION</td><td><?=$vehicle['hpa']?></td></tr>
+<tr><td>HYPOTHECATION</td><td><span class="editable" id="hpa" data-type="text" data-pk="<?=$vehicle['id']?>" data-url="ajax.php"><?=$vehicle['hpa']?></span></td></tr>
 </tbody>
 </table>
 

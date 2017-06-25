@@ -35,7 +35,7 @@
     <!--service customer search result table-->
 <div class="panel panel-default">
   <table id="customer_result_table" class="table table-hover table-condensed">
-  <thead><tr><th>CUSTOMER NAME</th><th>REGISTRATION NUMBER</th><th>CHASSIS NUMBER</th><th>CUSTOMER NUMBER</th><th>ACTION</th></tr></thead>
+  <thead><tr><th>#</th><th>CUSTOMER NAME</th><th>REGISTRATION NUMBER</th><th>CHASSIS NUMBER</th><th>CUSTOMER NUMBER</th><th>ACTION</th></tr></thead>
   <tbody id="result_tbody"></tbody>
 </table> 
 </div>
@@ -132,7 +132,7 @@
   <div class="form-group form-group-sm">
   <div class="checkbox">
   <label>
-    <input type="checkbox" value="true" name="add_policy" data-toggle="collapse" data-target="#add_policy_form" aria-expanded="false" aria-controls="add_policy_form">
+    <input type="checkbox" name="add_policy" data-toggle="collapse" data-target="#add_policy_form" aria-expanded="false" aria-controls="add_policy_form">
     ADD INSURANCE DETAILS
   </label>
 </div>
@@ -269,28 +269,6 @@
 
 <script>
 
-		
-      //add new service entry
-	  function add_entry(e) {
-          $.ajax({
-            type: 'post',
-            url: 'ajax.php',
-            data: $(e).serialize(),
-            success: function (result) {
-				if (result==1) {$(e)[0].reset();$('#entry_form_modal').modal('hide')}
-              else
-			  {alert(result);}
-            }
-          });
-
-        }
-
-	  	  
-	  //entry form modal function
-	  function open_entry_modal(e) {
-		 	document.add_entry_form.chassis.value = e.value;
-			document.add_entry_form.chassis_d.value = e.value;
-	  }
 	  
 	  
 	  //add customer function
@@ -319,11 +297,13 @@
             url: 'ajax.php',
 			dataType:'JSON',
             success: function (result) {
+				sn=0;
 				if (result.length==0) {alert('no record found');}
               else
 			  {
 			 for (i in result) {
-				html=html+'<tr><td>'+result[i].customer_name+'</td><td>'+result[i].registration_number+'</td><td>'+result[i].chassis+'</td><td>'+result[i].customer_number+'</td><td><a href="view_cust.php?id='+result[i].id+'">VIEW</a></td></tr>';
+				 sn++;
+				html=html+'<tr><td>'+sn+'</td><td>'+result[i].customer_name+'</td><td>'+result[i].registration_number+'</td><td>'+result[i].chassis+'</td><td>'+result[i].customer_number+'</td><td><a href="view_cust.php?id='+result[i].id+'">VIEW</a></td></tr>';
 			 }
 			 $(result_table).html(html);
 			  }

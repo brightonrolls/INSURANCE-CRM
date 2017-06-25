@@ -1,5 +1,5 @@
-<?php $page='renewal_register';  include('db.php'); include('header.php');
-
+<?php $page='renewals';  include('db.php'); include('header.php');
+$sn=0;
 $count['followup']=0;
 $count['policy_done']=0;
 $count['policy_pending']=0;
@@ -10,6 +10,7 @@ $row_class=array("followup"=>"warning", "policy_done"=>"success", "policy_pendin
 
 $rows=$db->select('insurance_data t1',null,'t1.business_type,t1.company,t1.expiry_date,t1.policy_number,t1.id iid,vehicle_data.id vid,vehicle_data.customer_name,vehicle_data.customer_number',null,"INNER JOIN vehicle_data on t1.chassis=vehicle_data.chassis WHERE expiry_date=(select MAX(t2.expiry_date) from insurance_data t2 WHERE t1.chassis=t2.chassis AND MONTH(t2.expiry_date)=MONTH(now()) AND YEAR(t2.expiry_date)<=YEAR(now())) ORDER BY DAY(t1.expiry_date) ASC");
 for ($i=0; $i<count($rows); $i++) {
+	$sn++;
 	$p_n=$rows[$i]['policy_number'];
 	$status_row=$db->select('followup_data',"policy_number='$p_n' AND YEAR(create_date)=YEAR(now())",'status','id DESC',' LIMIT 1');
 	if ($status_row)
@@ -19,7 +20,7 @@ for ($i=0; $i<count($rows); $i++) {
 	$count[$status]++;
 	$date=date_create($rows[$i]['expiry_date']);
 	$expiry_date=date_format($date,"d-F-Y");
-	$policy_html.='<tr class="'.$row_class[$status].'"><td>'.$expiry_date.'</td><td>'.$status.'</td><td><a href="view_policy.php?id='.$rows[$i]['iid'].'">'.$rows[$i]['policy_number'].'</a></td><td>'.$rows[$i]['company'].'</td><td>'.$rows[$i]['customer_name'].'</td><td>'.$rows[$i]['customer_number'].'</td></tr>';
+	$policy_html.='<tr class="'.$row_class[$status].'"><td>'.$sn.'</td><td>'.$expiry_date.'</td><td>'.$status.'</td><td><a href="view_policy.php?id='.$rows[$i]['iid'].'">'.$rows[$i]['policy_number'].'</a></td><td>'.$rows[$i]['company'].'</td><td>'.$rows[$i]['customer_name'].'</td><td>'.$rows[$i]['customer_number'].'</td></tr>';
 }
 
 ?>
@@ -41,7 +42,7 @@ for ($i=0; $i<count($rows); $i++) {
    <button type="button" class="btn btn-default"  onclick="next_month();"><span class="glyphicon glyphicon-chevron-right"></span></button>
    </span>
    
-    <label id="current_period" class="input-group-addon"><?=date("F Y")?></label>
+    <label  class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span> <span id="current_period"><?=date("F Y")?></span></label>
   </div>
   
   </form>
@@ -71,7 +72,7 @@ for ($i=0; $i<count($rows); $i++) {
 
 <div class="panel panel-default">
 <table class="table table-hover table-condensed">
-<thead><tr><th>EXPIRY DATE</th><th>STATUS</th><th>POLICY NUMBER</th><th>COMPANY</th><th>CUSTOMER NAME</th><th>MOBILE NUMBER</th></thead>
+<thead><tr><th>#</th><th>EXPIRY DATE</th><th>STATUS</th><th>POLICY NUMBER</th><th>COMPANY</th><th>CUSTOMER NAME</th><th>MOBILE NUMBER</th></thead>
 <tbody id="policy_list">
 <?=$policy_html?>
 </tbody>
@@ -113,6 +114,7 @@ function formatDate(date) {
 			dataType:'JSON',
             data: $(e).serialize(),
             success: function (result) {
+				sn=0;
 				html='';
 				var followup_count=0;
 				var done_count=0;
@@ -125,8 +127,9 @@ function formatDate(date) {
 					{
 					
 				for (i in result) {
+					sn++;
 					count[result[i].status]++;
-				html=html+'<tr class="'+row_class[result[i].status]+'"><td>'+formatDate(result[i].expiry_date)+'</td><td>'+result[i].status+'</td><td><a href="view_policy.php?id='+result[i].iid+'">'+result[i].policy_number+'</a></td><td>'+result[i].company+'</td><td>'+result[i].customer_name+'</td><td>'+result[i].customer_number+'</td><td></tr>';
+				html=html+'<tr class="'+row_class[result[i].status]+'"><td>'+sn+'</td><td>'+formatDate(result[i].expiry_date)+'</td><td>'+result[i].status+'</td><td><a href="view_policy.php?id='+result[i].iid+'">'+result[i].policy_number+'</a></td><td>'+result[i].company+'</td><td>'+result[i].customer_name+'</td><td>'+result[i].customer_number+'</td><td></tr>';
 			 }
 			 
 			 followup_count=count["followup"]*100/result.length;

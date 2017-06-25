@@ -61,7 +61,7 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
 <div class="col-md-1">
 
 <p>
-<a href="javascript:window.history.back();" class="btn btn-default">BACK</a>
+<a href="javascript:window.history.back();" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span> BACK</a>
 </p></div>
 <div class="col-md-7">
 <div class="panel panel-default">
@@ -75,13 +75,15 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
    <th>POLICY TYPE</th>
     <th>COMPANY</th>
  <th>EXPIRY DATE</th>
+  <th>CLAIM</th>
  </tr>
  <tr>
  <td><span class="editable" id="policy_number" data-type="text" data-pk="<?=$policy['id']?>" data-url="ajax.php"><?=$policy['policy_number']?></span> <?=$d_policy?></td>
-   <td><?=$policy['policy_type']?></td>
-    <td><?=$policy['company']?></td>	
-  <td><?=date( 'd-m-Y', strtotime($policy['expiry_date']))?></td>
-</tr>
+ <td><?=$policy['policy_type']?></td>
+ <td><?=$policy['company']?></td>	
+ <td><?=date( 'd-m-Y', strtotime($policy['expiry_date']))?></td>
+ <td><span class="editable" id="claim" data-type="text" data-pk="<?=$policy	['id']?>" data-url="ajax.php"><?=$policy['claim']?></span></td>
+ </tr>
 
  </table>
  
@@ -100,7 +102,7 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
   <td>NCB</td><td><span class="editable" id="ncb" data-type="text" data-pk="<?=$policy['id']?>" data-url="ajax.php"><?=$policy['ncb']?></span>%</td>
   </tr>
   <tr>
-  <td>DISCOUNT</td><td><span class="editable" id="discount" data-type="text" data-pk="<?=$policy['id']?>" data-url="ajax.php"><?=$policy['discount']?>%</span></td>
+  <td>DISCOUNT</td><td><span class="editable" id="discount" data-type="text" data-pk="<?=$policy['id']?>" data-url="ajax.php"><?=$policy['discount']?></span>%</td>
   </tr>
   <tr>
   <td>OD PREMIUM</td><td>Rs.<span class="editable" id="od" data-type="text" data-pk="<?=$policy['id']?>" data-url="ajax.php"><?=$policy['od']?></span></td>
@@ -116,13 +118,14 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
   </tr>
   </tbody>
  </table>
+ 
 </div>
 
 <div class="col-md-6">
 <table class="table table-bordered">
  <thead><tr><th colspan="2">CONTACT DETAILS</th></tr></thead>
  <tbody>
- <tr><td>REGISTRATION NO.</td><td><a data-toggle="modal" href="#vehicle_detail_modal"><?=$vehicle['registration_number']?></a></td></tr>
+<tr><td>REGISTRATION NO.</td><td><a target="view_cust" href="view_cust.php?id=<?=$vehicle['id']?>" data-toggle="tooltip" data-placement="left" title="<?=$vehicle['model'].' '.$vehicle['mfg'].' '.$vehicle['cc'].'cc'?>"><?=$vehicle['registration_number']?> <span class="glyphicon glyphicon-new-window"></span></a></td></tr>
 <tr><td>CUSTOMER NAME</td><td><?=$vehicle['customer_name']?></td></tr>
 <tr><td>CUSTOMER NUMBER</td><td><?=$vehicle['customer_number']?></td></tr>
 </tbody>
@@ -152,6 +155,7 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
  <!--NEW INDIA PREMIUM CALCULATOR-->
  
 <div class="col-md-4">
+
 <form name="calculator_form" onsubmit="cal_premium(this); return false;">
 <div class="panel panel-default">
   <div role="button" class="panel-heading" data-toggle="collapse" href="#calculator_panel">
@@ -193,14 +197,10 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
 </div>
 <div class="panel-footer">
 <div class="input-group input-group-sm">
-  <span class="input-group-btn">
-  </span>
   <label class="input-group-addon" for="premium_normal">NORMAL</label>
   <input type="text" id="premium_normal" class="form-control" disabled>
-
   <label class="input-group-addon">0 DAP</label>
   <input id="premium_0dap" type="text" id="premium_0dap" class="form-control" disabled>
-
 </div>
 
 
@@ -237,10 +237,12 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
 <option value="policy_done">POLICY DONE</option>
 <option value="lost">LOST</option>
 </select></div></div>
-<div class="col-md-7">
+<div class="col-md-5">
 <div class="form-group">
 <button class="btn btn-primary form-control">COMMENT</button>
-</div></div>
+</div>
+
+</div>
 
 </form>
 
@@ -393,29 +395,9 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
 </div></div></div>
 
 
-  <!--vehicle details-->
-  <div id="vehicle_detail_modal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="submit" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">VEHICLE INFORMATION</h4>
-      </div>
-      <div class="modal-body">
- <table class="table table-bordered">
-<tr><td>REGISTRATION NO.</td><td><?=$vehicle['registration_number']?></td></tr>
-<tr><td>CHASSIS NUMBER</td><td><?=$vehicle['chassis']?></td></tr>
-<tr><td>MODEL</td><td><?=$vehicle['model']?></td></tr>
-<tr><td>CUBIC CAPACITY</td><td><?=$vehicle['cc']?></td></tr>
-<tr><td>MFG YEAR</td><td><?=$vehicle['mfg']?></td></tr>
-<tr><td>HYPOTHECATION</td><td><?=$vehicle['hpa']?></td></tr>
-</table>
-</div>
-</div>
-</div>
-</div>
 
 <script>
+  var label_class = {followup:"label-warning", policy_done:"label-success", policy_pending:"label-info", lost:"label-danger"};
 
 function formatAMPM(date) {
   var hours = date.getHours();
@@ -433,7 +415,7 @@ function formatAMPM(date) {
 	  function add_comment(e) {
 		  var today = new Date();
 		  var m=(today.getMonth()+1) <10 ? '0'+(today.getMonth()+1) : (today.getMonth()+1);
-		  var dateTime = today.getDate()+'-'+m+'-'+today.getFullYear()+' ('+formatAMPM(today)+')';
+		  var dateTime = today.getDate()+'-'+m+'-'+today.getFullYear();
 
 		  
 		  data=$(e).serialize();
@@ -444,7 +426,7 @@ function formatAMPM(date) {
             data: data,
             success: function 	(result) {
 				if (result==1) {
-				comment_html='<li class="list-group-item"><p class="list-group-item-text">'+comment_form.remark.value+'<br/><span class="badge">'+comment_form.status.value+'</span> - <small>'+dateTime+'</small></p></li>';
+				comment_html='<li class="list-group-item"><span class="label '+label_class[comment_form.status.value]+'">'+comment_form.status.value+'</span><p class="list-group-item-text">'+comment_form.remark.value+'</p><p><small class="pull-right">'+dateTime+'</small></p></li>';
 				$("#comment_list").prepend(comment_html);
 				e.reset();
 				}
@@ -468,7 +450,7 @@ function formatAMPM(date) {
             success: function (result) {
 				if (result==1) {
 					$( "#renew_policy_btn" ).replaceWith( '<span>'+document.add_policy_form.new_policy_number.value+'</span>');
-					comment_html='<li class="list-group-item"><p class="list-group-item-text">new policy number - '+document.add_policy_form.new_policy_number.value+'<br/><span class="badge">policy_done</span> - <small>'+dateTime+'</small></p></li>';
+					comment_html='<li class="list-group-item"><span class="label label-success">policy_done</span><p class="list-group-item-text">new policy number - '+document.add_policy_form.new_policy_number.value+'</p><p><small class="pull-right">'+dateTime+'</small></p></li>';
 				$("#comment_list").prepend(comment_html);
 					$(e)[0].reset();$('#renew_policy_modal').modal('hide')}
               else
@@ -497,7 +479,7 @@ function formatAMPM(date) {
 		}
 
 	$(document).ready(function() {
-	
+	$('[data-toggle="tooltip"]').tooltip();
 		
     $('.editable').editable({
 		ajaxOptions: {

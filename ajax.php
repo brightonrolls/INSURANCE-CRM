@@ -181,8 +181,6 @@ if ($_POST['expiry_date']!=''){$insurance_data['expiry_date']=$_POST['expiry_dat
 $result= $db->insert('insurance_data',$insurance_data);
 if (!$result) {die($result);}
 $newdata['new_policy_number']=$_POST['new_policy_number'];
-$newdata['update_date']=date("Y-m-d H:i:s");
-$newdata['status']='policy_done';
 $result=$db->update('insurance_data',"policy_number='$oldpolicy_number'",$newdata);
 if (!$result) {die($result);}
 $followup_data['policy_number']=$oldpolicy_number;

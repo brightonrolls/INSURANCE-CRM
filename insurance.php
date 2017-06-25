@@ -1,9 +1,15 @@
 <?php $page='insurance';  include('db.php'); include('header.php');?>
 
 	<div class="container-fluid">
-<p>
-<form class="form-inline" name="policy_form" onsubmit="get_policy(this); return false;">
+	<div class="row">
+<div class="col-sm-2">
+<form class="form-group-sm" name="policy_form" onsubmit="get_policy(this); return false;">
 <input type="hidden" name="task" value="find_policy" />
+
+
+<div class="panel panel-default">
+  <div class="panel-heading" >EXPIRY DATE <div class="pull-right"><span class="glyphicon glyphicon-calendar"></span></div></div>
+  <div class="panel-body">
 <div class="form-group">
 <label for="start_date">FROM</label>
 <input class="form-control" type="date" id="start_date" name="start_date" />
@@ -12,20 +18,15 @@
 <label for="end_date">TO</label>
 <input class="form-control" type="date" id="end_date" name="end_date" />
 </div>
-<div class="form-group">
-<div class="input-group">
-<input class="form-control" type="text" id="policy_number" placeholder="Policy Number" name="policy_number" />
-<span class="input-group-btn">
- <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> FIND</button>
- </span>
 </div>
 </div>
-<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#more_filters">
- MORE FILTERS
-</button>
-</p>
-  <div class="collapse" id="more_filters">
-  <div class="well well-sm">
+
+<div class="panel panel-default">
+  <div role="button" class="panel-heading" data-toggle="collapse" href="#more_filters">
+  MORE FILTERS <div class="pull-right"><span class="glyphicon glyphicon-menu-down"></span></div>
+  </div>
+  <div id="more_filters" class="panel-collapse collapse" role="tabpanel">
+  <div class="panel-body">
   <div class="form-group form-group-sm">
   <select class="form-control" name="business_type" >
   <option value="">BUSINESS TYPE</option>
@@ -51,13 +52,30 @@
   </div>
   </div>
 </div>
+</div>
+
+
+
+</div>
+
+<div class="col-sm-8">
+
+
+<div class="form-group">
+<div class="input-group input-group-sm">
+<input class="form-control" type="text" id="policy_number" placeholder="Policy Number" name="policy_number" />
+<span class="input-group-btn">
+ <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> FIND</button>
+</span>
+</div>
+</div>
 </form>
 
-
-
 <div class="panel panel-default">
+<div class="table-responsive">
 <table class="table table-hover table-condensed">
 <thead><tr>
+<th>#</th>
 <th>POLICY NUMBER</th>
 <th>POLICY TYPE</th>
 <th>BUSINESS TYPE</th>
@@ -66,11 +84,13 @@
 <th>EXPIRY DATE</th>
 </thead>
 <tbody id="policy_list">
-
 </tbody>
 </table>
 </div>
+</div>
+</div>
 
+</div>
 </div>
 
 	
@@ -101,6 +121,7 @@ function formatDate(date) {
 			dataType:'JSON',
             data: $(e).serialize(),
             success: function (result) {
+				sn=0;
 				html='';
 				result_table=document.getElementById('policy_list');
 				if (result.length==0)
@@ -109,7 +130,8 @@ function formatDate(date) {
 					{
 					
 				for (i in result) {
-				html=html+'<tr><td><a href="view_policy.php?id='+result[i].id+'">'+result[i].policy_number+'</a></td><td>'+result[i].policy_type+'</td><td>'+result[i].business_type+'</td><td>'+result[i].company+'</td><td>'+result[i].premium+'</td><td>'+formatDate(result[i].expiry_date)+'</td><td></tr>';
+					sn++;
+				html=html+'<tr><td>'+sn+'</td><td><a href="view_policy.php?id='+result[i].id+'">'+result[i].policy_number+'</a></td><td>'+result[i].policy_type+'</td><td>'+result[i].business_type+'</td><td>'+result[i].company+'</td><td>'+result[i].premium+'</td><td>'+formatDate(result[i].expiry_date)+'</td><td></tr>';
 			 }
 			 
 			 
@@ -123,43 +145,6 @@ function formatDate(date) {
 		
 
 		
-		//previous month policy filter
-		var monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
-		m=<?=date("m")?>;
-		mn=m-1;
-		y=<?=date("Y")?>;
-		function prev_month() {
-			m=m-1;
-			mn=mn-1;
-			if (m==0) {
-				m=12;
-				mn=11;
-				y=y-1;
-			}
-			
-			
-		filter_date_form.y.value=y;
-		filter_date_form.m.value=m;
-		get_policy(filter_date_form);
-		document.getElementById("current_period").innerHTML=monthNames[mn]+' '+y;
-		
-        }
-		//next month policy filter
-		function next_month() {
-			m=m+1;
-			mn=mn+1;
-			if (m==13) {
-				m=1;
-				mn=0;
-				y=y+1;
-			}
-		filter_date_form.y.value=y;
-		filter_date_form.m.value=m;
-		get_policy(filter_date_form);
-		document.getElementById("current_period").innerHTML=monthNames[mn]+' '+y;
-		}
 	  
 </script>
 
