@@ -131,7 +131,7 @@ function formatDate(date) {
 					
 				for (i in result) {
 					sn++;
-				html=html+'<tr><td>'+sn+'</td><td><a href="view_policy.php?id='+result[i].id+'">'+result[i].policy_number+'</a></td><td>'+result[i].policy_type+'</td><td>'+result[i].business_type+'</td><td>'+result[i].company+'</td><td>'+result[i].premium+'</td><td>'+formatDate(result[i].expiry_date)+'</td><td></tr>';
+				html=html+'<tr><td>'+sn+'</td><td><a href="view_policy.php?id='+result[i].id+'">'+result[i].policy_number+'</a></td><td>'+result[i].policy_type+'</td><td>'+result[i].business_type+'</td><td>'+result[i].company+'</td><td>'+result[i].premium+'</td><td>'+formatDate(result[i].expiry_date)+'</td></tr>';
 			 }
 			 
 			 

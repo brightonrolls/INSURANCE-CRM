@@ -159,7 +159,7 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
 <form name="calculator_form" onsubmit="cal_premium(this); return false;">
 <div class="panel panel-default">
   <div role="button" class="panel-heading" data-toggle="collapse" href="#calculator_panel">
-  NEW INDIA PREMIUM CALCULATOR
+  NEW INDIA PREMIUM CALCULATOR <div class="pull-right"><span class="glyphicon glyphicon-menu-down"></span></div>
   </div>
   <div id="calculator_panel" class="panel-collapse collapse" role="tabpanel">
   <div class="panel-body">
@@ -248,13 +248,14 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
 
 </div>
 
+
+
+</div>
 <!-- comment list-->
 
 <ul id="comment_list" class="list-group">
 <?=$comment_list_html?>
 </ul>
-
-</div>
 </div>
 
 
