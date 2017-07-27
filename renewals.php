@@ -1,4 +1,5 @@
 <?php $page='renewals';  include('db.php'); include('header.php');
+requirelogin();
 $sn=0;
 $count['followup']=0;
 $count['policy_done']=0;
@@ -26,58 +27,34 @@ for ($i=0; $i<count($rows); $i++) {
 ?>
 
 	<div class="container-fluid">
-	<div class="row">
-	
 
-<div class="col-md-2">
 <div class="form-group">
 <form name="filter_date_form" id="filter_date_form" class="form-inline">
 <input type="hidden" name="task" value="filter_policy"/>
 <input type="hidden" name="m" value=""/>
 <input type="hidden" name="y" value=""/>
 
-<div class="input-group ">
+<div class="input-group">
   <span class="input-group-btn">
    <button type="button" class="btn btn-default" onclick="prev_month();"><span class="glyphicon glyphicon-chevron-left"></span></button>
    <button type="button" class="btn btn-default"  onclick="next_month();"><span class="glyphicon glyphicon-chevron-right"></span></button>
    </span>
-   
-    <label  class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span> <span id="current_period"><?=date("F Y")?></span></label>
+   <label  class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span> <span id="current_period"><?=date("F Y")?></span></label>
   </div>
   
   </form>
   </div>
-</div>
-
-<div class="col-md-10">
-  <div class="progress">
-  <div id="done_count" class="progress-bar progress-bar-success" style="width:<?=$count['policy_done']*100/count($rows).'%'?>">
-   <?=round($count['policy_done']*100/count($rows)).'%'?>
-  </div>
-    <div id="pending_count" class="progress-bar progress-bar-info" style="width:<?=$count['policy_pending']*100/count($rows).'%'?>">
-    <?=round($count['policy_pending']*100/count($rows)).'%'?>
-  </div>
-  <div id="followup_count" class="progress-bar progress-bar-warning" style="width:<?=$count['followup']*100/count($rows).'%'?>">
-   <?=round($count['followup']*100/count($rows)).'%'?>
-  </div>
-  <div id="lost_count" class="progress-bar progress-bar-danger" style="width:<?=$count['lost']*100/count($rows).'%'?>">
-   <?=round($count['lost']*100/count($rows)).'%'?>
-  </div>
-</div>
-
-</div>
-
-</div>
 
 
-<div class="panel panel-default">
+
+
 <table class="table table-hover table-condensed">
 <thead><tr><th>#</th><th>EXPIRY DATE</th><th>STATUS</th><th>POLICY NUMBER</th><th>COMPANY</th><th>CUSTOMER NAME</th><th>MOBILE NUMBER</th></thead>
 <tbody id="policy_list">
 <?=$policy_html?>
 </tbody>
 </table>
-</div>
+
 
 </div>
 
@@ -105,7 +82,6 @@ function formatDate(date) {
 	  result_table=document.getElementById('policy_list');
 	  function get_policy(e) {
 		row_class={followup:"warning", policy_done:"success", policy_pending:"info", lost:"danger"};
-		count={followup:0, policy_done:0, policy_pending:0, lost:0};
 		
 		
           $.ajax({
@@ -116,10 +92,6 @@ function formatDate(date) {
             success: function (result) {
 				sn=0;
 				html='';
-				var followup_count=0;
-				var done_count=0;
-				var pending_count=0;
-				var 	lost_count=0;
 				
 				if (result.length==0)
 				{}
@@ -128,29 +100,13 @@ function formatDate(date) {
 					
 				for (i in result) {
 					sn++;
-					count[result[i].status]++;
-				html=html+'<tr class="'+row_class[result[i].status]+'"><td>'+sn+'</td><td>'+formatDate(result[i].expiry_date)+'</td><td>'+result[i].status+'</td><td><a href="view_policy.php?id='+result[i].iid+'">'+result[i].policy_number+'</a></td><td>'+result[i].company+'</td><td>'+result[i].customer_name+'</td><td>'+result[i].customer_number+'</td><td></tr>';
+				html=html+'<tr class="'+row_class[result[i].status]+'"><td>'+sn+'</td><td>'+formatDate(result[i].expiry_date)+'</td><td>'+result[i].status+'</td><td><a href="view_policy.php?id='+result[i].iid+'">'+result[i].policy_number+'</a></td><td>'+result[i].company+'</td><td>'+result[i].customer_name+'</td><td>'+result[i].customer_number+'</td></tr>';
 			 }
-			 
-			 followup_count=count["followup"]*100/result.length;
-			 done_count=count["policy_done"]*100/result.length;
-			 pending_count=count["policy_pending"]*100/result.length;
-			 lost_count=count["lost"]*100/result.length;
+			 $(result_table).html(html);
 			 
 			 
 				}
 				
-				//UPDATE PROGRESS BAR
-			 document.getElementById("followup_count").style.width =followup_count+'%';
-			 document.getElementById("done_count").style.width = done_count+'%';
-			 document.getElementById("pending_count").style.width = pending_count+'%';
-			 document.getElementById("lost_count").style.width = lost_count+'%';
-			 
-			 document.getElementById("followup_count").innerHTML =Math.round(followup_count)+'%';
-			 document.getElementById("done_count").innerHTML = Math.round(done_count)+'%';
-			 document.getElementById("pending_count").innerHTML = Math.round(pending_count)+'%';
-			 document.getElementById("lost_count").innerHTML = Math.round(lost_count)+'%';
-				$(result_table).html(html);
             }
           });
 

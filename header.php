@@ -1,13 +1,8 @@
 <?php
-// Start the session
-session_start();
-
-if (!isset($_SESSION["login"])) {die('not login');}
-
-
+include('fun.php');
 $customer_page='';
 $insurance_page='';
-$document_page='';
+$renewals_page='';
 if (isset($page)) {
  switch ($page)
 {
@@ -20,17 +15,12 @@ break;
 case 'renewals':
 $renewals_page='active';
 break;
-case 'document':
-$document_page='active';
-break;
 case 'calculator':
 $calculator_page='active';
 break;
 
 }
 }
-
-include('fun.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,7 +72,6 @@ include('fun.php');
 	  <li class="<?=$customer_page?>"><a href="customers.php">CUSTOMERS</a></li>
 	  <li class="<?=$insurance_page?>"><a href="insurance.php">INSURANCE</a></li>
 	  <li class="<?=$renewals_page?>"><a href="renewals.php">RENEWALS</a></li>
-	  <li class="<?=$document_page?>"><a href="document.php">DOCUMENTS</a></li>
 	  </ul>
 	    <p class="navbar-text navbar-right">Created by <b>Utkarsh Anand</b></p>
 	  </div>

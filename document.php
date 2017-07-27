@@ -1,4 +1,8 @@
-<?php $page='document';  include('header.php');?>
+<?php
+$page='document';
+include('header.php');
+requirelogin();
+?>
 
 <div class="container-fluid">
 

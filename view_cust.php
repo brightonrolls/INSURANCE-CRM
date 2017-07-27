@@ -1,4 +1,6 @@
-<?php include('db.php'); include('header.php'); ?>
+<?php include('db.php'); include('header.php');
+$login=checklogin();
+?>
 <?php
 if (isset($_GET["id"])) {$id=$_GET["id"];} else {die('id not set');}
 
@@ -35,7 +37,13 @@ for ($i = 0; $i <count($rows); $i++) {
 
 <div class="col-md-4">
 <table class="table table-bordered">
- <thead><tr><th colspan="2">CONTACT INFORMATION <span class="pull-right"><button type="button" onclick="disable_but();" class="btn btn-default btn-xs" data-toggle="button" aria-pressed="false" autocomplete="off"><span class="glyphicon glyphicon-edit"></span> EDIT</button></span></th></tr></thead>
+ <thead><tr><th colspan="2">CONTACT INFORMATION 
+     <?php 
+  if ($login) {echo '
+ <span class="pull-right"><button type="button" onclick="disable_but();" class="btn btn-default btn-xs" data-toggle="button" aria-pressed="false" autocomplete="off"><span class="glyphicon glyphicon-edit"></span> EDIT</button></span>
+  ';}
+  ?>
+ </th></tr></thead>
  <tbody>
 <tr><td>CUSTOMER NAME</td><td><span class="editable" id="customer_name" data-type="text" data-pk="<?=$vehicle['id']?>" data-url="ajax.php"><?=$vehicle['customer_name']?></span></td></tr>
 <tr><td>CUSTOMER NUMBER</td><td><span class="editable" id="customer_number" data-type="text" data-pk="<?=$vehicle['id']?>" data-url="ajax.php"><?=$vehicle['customer_number']?></span></td></tr>
@@ -59,10 +67,13 @@ for ($i = 0; $i <count($rows); $i++) {
 <div class="col-md-7"> 
 <div class="panel panel-default">
   <!-- Default panel contents -->
-  <div class="panel-heading">INSURANCE POLICY LIST	</div>
-  <div class="panel-body">
-<button class="btn btn-primary" data-toggle="modal" data-target="#add_policy_modal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ADD POLICY</button>
-</div>
+  <div class="panel-heading">INSURANCE POLICY LIST	    <?php 
+  if ($login) {echo '
+  <span class="pull-right">
+<button class="btn btn-link  btn-xs" data-toggle="modal" data-target="#add_policy_modal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ADD POLICY</button>
+ </span> ';}
+  ?></div>
+
 <div class="table-responsive">
 <table class="table">
 <thead>

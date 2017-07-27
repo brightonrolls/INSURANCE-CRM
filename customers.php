@@ -1,24 +1,32 @@
-<?php $page='customer'; include('header.php'); ?>
+<?php
+$page='customer';
+include('header.php');
+
+?>
 
 
 <div class="container-fluid">
 <div class="row">
    <div class="col-md-2">
-  
+   
+  <?php 
+  if (checklogin()) {echo '
   <!-- add customer button -->
   <div class="form-group">
 <button class="btn btn-primary" data-toggle="modal" data-target="#add_customer_modal">
 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> NEW CUSTOMER</button>
   </div>
+  ';}
+	?>
+	
 	</div>
-
     <div class="col-md-6">
 	<!--find customer form -->
 	<form name="find_customer_form" onsubmit="find_customer(this); return false;">
 <input type="hidden" name="task" value="find_cust" />
 <div class="form-group">
 <div class="input-group">
-<input id="query"  class="form-control" placeholder="Customer Name or Number or Chassis" name="query" type="text" required/>
+<input id="query" class="form-control" placeholder="Customer Name / Registration Number / Chassis Number" name="query" type="text" required/>
   <span class="input-group-btn">
   <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> FIND</button>
   </span>
@@ -33,12 +41,12 @@
 
   
     <!--service customer search result table-->
-<div class="panel panel-default">
+
   <table id="customer_result_table" class="table table-hover table-condensed">
   <thead><tr><th>#</th><th>CUSTOMER NAME</th><th>REGISTRATION NUMBER</th><th>CHASSIS NUMBER</th><th>CUSTOMER NUMBER</th><th>ACTION</th></tr></thead>
   <tbody id="result_tbody"></tbody>
 </table> 
-</div>
+
 
 
 </div>
@@ -105,6 +113,9 @@
   <option value="AMEO">AMEO</option>
   <option value="ZETTA">JETTA</option>
   <option value="PASAT">PASSAT</option>
+  <option value="EON">EON</option>
+  <option value="INDICA">INDICA</option>
+  <option value="FORTUNER">FORTUNER</option>
 </select></div></div>
   <div class="col-md-4"><div class="form-group form-group-sm">
     <label for="mfg">MANUFACTUR YEAR</label>
@@ -217,6 +228,13 @@
   <input type="text" class="form-control" name="discount" id="discount" placeholder="70" />
   </div>
   </div>
+  
+  <div class="form-group form-group-sm">
+  <label for="st" class="col-sm-3 control-label">TAX (%)</label>
+  <div class="col-sm-3">
+  <input type="text" class="form-control" name="st" id="st" placeholder="18" />
+  </div>
+  </div>
 
   <div class="form-group form-group-sm">
   <label for="premium" class="col-sm-3 control-label">PREMIUM (Rs)</label>
@@ -247,6 +265,12 @@
   </div>
   </div>
   
+  <div class="form-group form-group-sm">
+  <label for="business_month" class="col-sm-3 control-label">BUSINESS DATE</label>
+  <div class="col-sm-4">
+  <input type="date" class="form-control" id="business_month" name="business_month" />
+  </div>
+  </div>
   
   </div>
   </div>

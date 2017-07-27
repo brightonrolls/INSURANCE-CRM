@@ -1,31 +1,32 @@
-<?php $page='insurance';  include('db.php'); include('header.php');?>
-
+<?php
+$page='insurance';
+include('db.php');
+include('header.php');
+requirelogin();
+?>
+<form name="policy_form" onsubmit="get_policy(this); return false;">
 	<div class="container-fluid">
 	<div class="row">
 <div class="col-sm-2">
-<form class="form-group-sm" name="policy_form" onsubmit="get_policy(this); return false;">
+
 <input type="hidden" name="task" value="find_policy" />
-
-
 <div class="panel panel-default">
-  <div class="panel-heading" >EXPIRY DATE <div class="pull-right"><span class="glyphicon glyphicon-calendar"></span></div></div>
-  <div class="panel-body">
-<div class="form-group">
+  <div class="panel-heading">EXPIRY DATE <div class="pull-right"><span class="glyphicon glyphicon-calendar"></span></div></div>
+    <div class="panel-body">
+<div class="form-group form-group-sm">
 <label for="start_date">FROM</label>
 <input class="form-control" type="date" id="start_date" name="start_date" />
 </div>
-<div class="form-group">
+<div class="form-group form-group-sm">
 <label for="end_date">TO</label>
 <input class="form-control" type="date" id="end_date" name="end_date" />
 </div>
+</div>	
 </div>
-</div>
-
 <div class="panel panel-default">
-  <div role="button" class="panel-heading" data-toggle="collapse" href="#more_filters">
-  MORE FILTERS <div class="pull-right"><span class="glyphicon glyphicon-menu-down"></span></div>
-  </div>
-  <div id="more_filters" class="panel-collapse collapse" role="tabpanel">
+
+  <div class="panel-heading">FILTERS <div class="pull-right"><span class="glyphicon glyphicon-filter"></span></div></div>
+
   <div class="panel-body">
   <div class="form-group form-group-sm">
   <select class="form-control" name="business_type" >
@@ -51,27 +52,27 @@
   </select>
   </div>
   </div>
-</div>
-</div>
-
-
 
 </div>
 
-<div class="col-sm-8">
 
 
+</div>
+</form>
+<div class="col-sm-10">
+<div class="row">
+    <div class="col-sm-6">
 <div class="form-group">
-<div class="input-group input-group-sm">
-<input class="form-control" type="text" id="policy_number" placeholder="Policy Number" name="policy_number" />
+<div class="input-group">
+<input class="form-control" type="text" id="policy_number" placeholder="POLICY NUMBER" name="policy_number" />
 <span class="input-group-btn">
  <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> FIND</button>
 </span>
 </div>
 </div>
-</form>
+</div>
+</div>
 
-<div class="panel panel-default">
 <div class="table-responsive">
 <table class="table table-hover table-condensed">
 <thead><tr>
@@ -87,7 +88,7 @@
 </tbody>
 </table>
 </div>
-</div>
+
 </div>
 
 </div>

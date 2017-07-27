@@ -12,7 +12,7 @@ $task=(isset($_POST['task'])?$_POST['task']:null);
 case 'find_cust':
 if (isset($_POST["query"])) {$query=$_POST["query"];} else {$query=null;}
 if ($query==null){echo 'Please enter something in textbox.';}else {
-$rows=$db->select('vehicle_data',"customer_number LIKE '%$query%' OR customer_name LIKE '%$query%' OR chassis LIKE '%$query%' OR registration_number LIKE '%$query%'",'customer_name,registration_number,chassis,customer_number,id');
+$rows=$db->select('vehicle_data',"customer_name LIKE '%$query%' OR chassis LIKE '%$query%' OR registration_number LIKE '%$query%'",'customer_name,registration_number,chassis,customer_number,id');
  echo json_encode($rows);
 }
 break;
@@ -40,6 +40,7 @@ $policy_data['covernote']=$_POST['covernote'];
 $policy_data['company']=$_POST['company'];
 if ($_POST['od']!=''){$policy_data['od']=$_POST['od'];}
 if ($_POST['tp']!=''){$policy_data['tp']=$_POST['tp'];}
+if ($_POST['st']!=''){$policy_data['st']=$_POST['st'];} else {$policy_data['st']=18;}
 if ($_POST['premium']!=''){$policy_data['premium']=$_POST['premium'];}
 if ($_POST['idv']!=''){$policy_data['idv']=$_POST['idv'];}
 if ($_POST['ncb']!=''){$policy_data['ncb']=$_POST['ncb'];}
@@ -47,6 +48,7 @@ if ($_POST['discount']!=''){$policy_data['discount']=$_POST['discount'];}
 if ($_POST['policy_type']!=''){$policy_data['policy_type']=$_POST['policy_type'];}
 if ($_POST['business_type']!=''){$policy_data['business_type']=$_POST['business_type'];}
 if ($_POST['expiry_date']!=''){$policy_data['expiry_date']=$_POST['expiry_date'];}
+if ($_POST['business_month']!=''){$policy_data['business_month']=$_POST['business_month'];}
 echo $db->insert('insurance_data',$policy_data);
 }
 else {echo $vehicle_result;}

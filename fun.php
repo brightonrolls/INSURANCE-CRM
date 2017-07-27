@@ -1,4 +1,19 @@
 <?php
+
+//check user login
+function checklogin() {
+session_start();
+return (isset($_SESSION["login"])?true:false);
+}
+
+//login required page
+function requirelogin() {
+	if (!checklogin()){
+die('<div class="container-fluid"><div class="alert alert-danger" role="alert">Login Error</div></div>');
+	}
+}
+
+
 	  function premium_0dap($idv,$cc,$y,$d,$n) {
 		  
 		  if ($y<5) {

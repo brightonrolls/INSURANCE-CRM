@@ -1,6 +1,5 @@
-<?php include('db.php'); include('header.php'); ?>
-<?php
-
+<?php include('db.php'); include('header.php'); 
+requirelogin();
 
 //get policy data
 if (isset($_GET["id"])) {$id=$_GET["id"];} else {die('id not set');}
@@ -18,6 +17,7 @@ $new_expiry_date=$policy['expiry_date'];
 if ($policy['new_policy_number']==null) {
 $renew_policy='<button class="btn btn-link btn-xs" id="renew_policy_btn" data-toggle="modal" data-target="#renew_policy_modal">ADD</button>';
 } else {
+
 $new_policy_number=$policy['new_policy_number'];
 $rows=$db->select('insurance_data',"policy_number = '$new_policy_number' LIMIT 1");
 if (count($rows)) {
@@ -44,13 +44,19 @@ else {die('vehicle not found');}
 
 
 // get comment list
+$panel_class='panel-default';
 $label_class=array("followup"=>"label-warning", "policy_done"=>"label-success", "policy_pending"=>"label-info", "lost"=>"label-danger", null=>null);
 $comment_list_html='';
 $policy_number=$policy['policy_number'];
 $rows=$db->select('followup_data',"policy_number = '$policy_number' ORDER BY id DESC");
+if ($rows) {
 for ($i = 0; $i <count($rows); $i++) {
+	$panel_class='';
 $date = date( 'd-m-Y', strtotime($rows[$i]['create_date']) );
 $comment_list_html.='<li class="list-group-item "><span class="label '.$label_class[$rows[$i]['status']].'">'.$rows[$i]['status'].'</span><p class="list-group-item-text">'.$rows[$i]['remark'].'</p><p><small class="pull-right">'.$date.'</small></p></li>';
+}
+	$panel_class_array=array("followup"=>"panel-warning", "policy_done"=>"panel-success", "policy_pending"=>"panel-info", "lost"=>"panel-danger", null=>"panel-default");
+	$panel_class=$panel_class_array[$rows[0]['status']];
 }
 ?>
 
@@ -64,7 +70,7 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
 <a href="javascript:window.history.back();" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span> BACK</a>
 </p></div>
 <div class="col-md-7">
-<div class="panel panel-default">
+<div class="panel <?=$panel_class?>">
   <div class="panel-heading">INSURANCE DETAILS <span class="pull-right"><button type="button" onclick="disable_but();" class="btn btn-default btn-xs" data-toggle="button" aria-pressed="false" autocomplete="off"><span class="glyphicon glyphicon-edit"></span> EDIT</button></span></div>
   <div class="panel-body">
 
@@ -156,14 +162,14 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
  
 <div class="col-md-4">
 
-<form name="calculator_form" onsubmit="cal_premium(this); return false;">
+
 <div class="panel panel-default">
   <div role="button" class="panel-heading" data-toggle="collapse" href="#calculator_panel">
   NEW INDIA PREMIUM CALCULATOR <div class="pull-right"><span class="glyphicon glyphicon-menu-down"></span></div>
   </div>
   <div id="calculator_panel" class="panel-collapse collapse" role="tabpanel">
   <div class="panel-body">
-  
+  <form name="calculator_form" onsubmit="cal_premium(this); return false;">
 <div class="row">
 <div class="col-md-5"> 
 <div class="form-group form-group-sm">
@@ -191,21 +197,18 @@ $comment_list_html.='<li class="list-group-item "><span class="label '.$label_cl
 </div>
 </div>
 </div>
-<div class="form-group form-group-sm">
-  <button class="btn btn-default" type="submit">CALCULATE</button>
-</div>
-</div>
-<div class="panel-footer">
-<div class="input-group input-group-sm">
-  <label class="input-group-addon" for="premium_normal">NORMAL</label>
-  <input type="text" id="premium_normal" class="form-control" disabled>
-  <label class="input-group-addon">0 DAP</label>
-  <input id="premium_0dap" type="text" id="premium_0dap" class="form-control" disabled>
-</div>
+<table class="table table-condensed">
+<thead><th>PREMIUM</th><th>NORMAL</th><th>0DAP</th></thead>
+<tbody>
+<tr><td><button class="btn btn-default btn-sm" type="submit">CALCULATE</button></td>
+<td><span id="premium_normal"></span></td>
+<td><span id="premium_0dap"></span></td></tr>
+</tbody>
+</table>
 
+</div>
 
 </form>
-</div>
 </div>
 
 </div>
@@ -467,8 +470,8 @@ function formatAMPM(date) {
 		  y=new Date().getFullYear()-<?=$vehicle['mfg']-1?>;
 		  d=e.calculator_discount.value;
 		  n=e.calculator_ncb.value;
-		  document.getElementById('premium_0dap').value=premium(idv,cc,y,d,n,'0dap');
-		  document.getElementById('premium_normal').value=premium(idv,cc,y,d,n,'normal');
+		  document.getElementById('premium_0dap').innerHTML=premium(idv,cc,y,d,n,'0dap');
+		  document.getElementById('premium_normal').innerHTML=premium(idv,cc,y,d,n,'normal');
 		  
 	  
 	  }	
@@ -502,7 +505,32 @@ function formatAMPM(date) {
 
 
 
-});	  
+});	
+
+
+  //premium calculator
+	  function premium(idv,cc,y,d,n,type) {
+		  
+		  if (y<5) {
+			  normal=(cc<=1500)?3.191:3.343;
+		  }else{
+			  normal=(cc<=1500)?3.351:3.510;
+			  }
+		  en=(cc<=1500)?['.40','.50','.65','.85','1.05','1.25','1.45']:['.45','.55','.70','.90','1.10','1.30','1.50'];
+		  tp_act=(cc<=1500)?2863:7890;
+		  var np=(idv*normal)/100;
+		  var normal_premium=Math.ceil((idv*normal)/100);
+		  var discount=Math.floor((np*d)/100);
+		  normal_premium=normal_premium-discount;
+		  var ncb=Math.floor((normal_premium*n)/100);
+		  normal_premium=normal_premium-ncb;
+		  var en_premium=Math.ceil((idv*en[y-1])/100);
+		  var tp_premium=50+100+200+tp_act;
+		  var total_premium=(type=='0dap')?normal_premium+en_premium+tp_premium:normal_premium+tp_premium;
+		  var st=Math.ceil((total_premium*18)/100);
+		  net_premium=total_premium+st;
+		  return net_premium;
+	  }  
 	  
 </script>
 
